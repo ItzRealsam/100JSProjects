@@ -18,13 +18,16 @@
     
     <main class="quiz js-quiz" aria-live="polite">
       <!-- Shared Persistent Sticky Header -->
-      <header class="quiz__header">
+      <header class="quiz__header js-quiz-header">
+        <button class="quiz__nav-btn" aria-label="Go to previous section" id="btn-prev-section">
+          <i data-feather="arrow-left"></i> Back
+        </button>
         <div class="quiz__brand" aria-label="Quiz App Home">
           <img src="../../assets/images/realsam_logo.png" alt="The Realsam Logo" class="quiz__brand-logo">
           Quiz
         </div>
-        <div class="quiz__user-greeting">
-          Hello, Ewa! <span aria-hidden="true">&#x1F44B;</span>
+        <div class="quiz__user-greeting js-user-greeting">
+          Hello! <span aria-hidden="true">&#x1F44B;</span>
         </div>
       </header>
 
@@ -32,19 +35,21 @@
       <!-- SCREEN 1: INTRO (Hidden via CSS when active) -->
       <!-- ========================================== -->
       <section class="quiz__container quiz__container--intro js-quiz-intro" aria-labelledby="intro-title">
-        <p class="quiz__intro-greeting">Heyy there! Welcome to</p>
-        <h1 id="intro-title" class="quiz__title">How well do you know Sam?</h1>
+        <div class="quiz__contents">
+          <p class="quiz__intro-greeting">Heyy there! Welcome to</p>
+          <h1 id="intro-title" class="quiz__title">How well do you know Sam?</h1>
 
-        <p class="quiz__intro-subtext">
-          Let&apos;s get real, test your knowledge about me. <br>
-          Think you got what it takes to be #1.
-        </p>
-        <p class="quiz__intro-caution">
-          <strong>Note:</strong> I&apos;ll take your rankings personally. <span aria-hidden="true">&#x1F972;</span> Lemme see who actually cares.
-        </p>
+          <p class="quiz__intro-subtext">
+            Let&apos;s get real, test your knowledge about me. <br>
+            Think you got what it takes to be #1.
+          </p>
+          <p class="quiz__intro-caution">
+            <strong>Note:</strong> I&apos;ll take your rankings personally. <span aria-hidden="true">&#x1F972;</span> Lemme see who actually cares.
+          </p>
+        </div>
 
         <footer class="quiz__actions">
-          <button type="button" class="quiz__btn-primary" id="btn-start-quiz">Take Quiz!</button>
+          <button type="button" class="quiz__btn-primary" id="btn-start-quiz">Proceed</button>
         </footer>
       </section>
 
@@ -52,102 +57,109 @@
       <!-- SCREEN 2: ONBOARDING                       -->
       <!-- ========================================== -->
       <section class="quiz__container quiz__container--onboard js-quiz-onboard inactive" aria-labelledby="onboard-title">
-        <p class="quiz__intro-greeting">So you want in. Nice</p>
-        <h1 id="onboard-title" class="quiz__title">Let&apos;s get to know you.</h1>
-        <p class="quiz__intro-subtext">I mean it takes two to tangle</p>
-
-        <footer class="quiz__actions quiz__actions--vertical">
+        <div class="quiz__contents">
+          <p class="quiz__intro-greeting">So you want in. Nice</p>
+          <h1 id="onboard-title" class="quiz__title">Let&apos;s get to know you.</h1>
+          <p class="quiz__intro-subtext">I mean it takes two to tangle</p>
+        </div>
+        
+        <form class="quiz__actions quiz__actions--vertical" id="quiz-onboard-form">
           <div class="quiz__field-group">
             <label for="user-name-input" class="sr-only">Enter your name</label>
             <input type="text" id="user-name-input" class="quiz__input-text" placeholder="Enter name" required>
           </div>
-          <button type="button" class="quiz__btn-primary">Take Quiz!</button>
-        </footer>
+          <div class=" quiz__actions">
+            <button type="button" class="quiz__btn-secondary" id="btn-start-quiz-anon">Proceed Anonymously</button>
+            <button disabled type="submit" class="quiz__btn-primary" id="btn-start-quiz-name">Take Quiz!</button>
+          </div>
+        </form>
       </section>
 
       <!-- ========================================== -->
       <!-- SCREEN 3-6: MAIN QUIZ INTERACTION          -->
       <!-- ========================================== -->
-      <section class="quiz__container quiz__container--content inactive" aria-labelledby="question-title">
-        <nav class="quiz__nav" aria-label="Quiz Navigation">
-          <button disabled class="quiz__nav-btn" aria-label="Go to previous question">
-            <i data-feather="chevron-left" aria-hidden="true"></i> Prev
-          </button>
-          <button class="quiz__nav-btn" aria-label="Go to next question">
-            Next <i data-feather="chevron-right" aria-hidden="true"></i>
-          </button>
-        </nav>
-        
-        <div class="quiz__metrics-bar">
-          <div class="quiz__metrics-row">
-            <div class="quiz__progress-text" id="progress-lbl">
-              Question <span class="quiz__progress-current">1</span> of <span class="quiz__progress-length">20</span>
-            </div>
-            <div class="quiz__streak" aria-label="1 question correct answer streak">
-              <span aria-hidden="true">&#x1F525;</span> <span>1</span>
-            </div>
-            <div class="quiz__timer" aria-label="Time remaining: 4 minutes 59 seconds out of 5 minutes">
-              Time: <span class="quiz__timer-current">04:59</span><span class="quiz__timer-total">/05:00</span>
-            </div>
-          </div>
+      <section class="quiz__container quiz__container--content js-quiz-content inactive" aria-labelledby="question-title">
+        <div class="quiz__contents">
+              <nav class="quiz__nav" aria-label="Quiz Navigation">
+            <button disabled class="quiz__nav-btn" aria-label="Go to previous question">
+              <i data-feather="chevron-left" aria-hidden="true"></i> Prev
+            </button>
+            <button class="quiz__nav-btn" aria-label="Go to next question">
+              Next <i data-feather="chevron-right" aria-hidden="true"></i>
+            </button>
+          </nav>
           
-          <div class="quiz__progress-track" role="progressbar" aria-labelledby="progress-lbl" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
-            <div class="quiz__progress-fill" style="width: 5%"></div>
-          </div>
-        </div>
-
-        <h2 id="question-title" class="quiz__question">What is Samuel&apos;s middle name?</h2>
-
-        <fieldset class="quiz__options-fieldset" style="border: none; padding: 0; margin: 0;">
-          <legend class="sr-only">Choose one option below</legend>
-          <ul class="quiz__options-list">
+          <div class="quiz__metrics-bar">
+            <div class="quiz__metrics-row">
+              <div class="quiz__progress-text" id="progress-lbl">
+                Question <span class="quiz__progress-current">1</span> of <span class="quiz__progress-length">20</span>
+              </div>
+              <div class="quiz__streak" aria-label="1 question correct answer streak">
+                <span aria-hidden="true">&#x1F525;</span> <span>1</span>
+              </div>
+              <div class="quiz__timer" aria-label="Time remaining: 4 minutes 59 seconds out of 5 minutes">
+                Time: <span class="quiz__timer-current">04:59</span><span class="quiz__timer-total">/05:00</span>
+              </div>
+            </div>
             
-            <li class="quiz__option-item">
-              <input type="radio" id="opt-a" name="quiz-options" value="john" class="quiz__option-input">
-              <label for="opt-a" class="quiz__option-label">
-                <span>a. John</span>
-                <span class="quiz__status-icon">
-                  <img src="../01_quiz-game/images/quiz__option-select.png" alt="Unchecked indicator" aria-hidden="true">
-                </span>
-              </label>
-            </li>
+            <div class="quiz__progress-track" role="progressbar" aria-labelledby="progress-lbl" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
+              <div class="quiz__progress-fill" style="width: 5%"></div>
+            </div>
+          </div>
 
-            <li class="quiz__option-item">
-              <input type="radio" id="opt-b" name="quiz-options" value="chibueze" class="quiz__option-input" checked>
-              <label for="opt-b" class="quiz__option-label">
-                <span>b. Chibueze</span>
-                <span class="quiz__status-icon">
-                  <img src="../01_quiz-game/images/quiz__option-select.png" alt="Selected layout indicator" aria-hidden="true">
-                </span>
-              </label>
-            </li>
+          <h2 id="question-title" class="quiz__question">What is Samuel&apos;s middle name?</h2>
 
-            <li class="quiz__option-item">
-              <input type="radio" id="opt-c" name="quiz-options" value="chiwendu" class="quiz__option-input">
-              <label for="opt-c" class="quiz__option-label">
-                <span>c. Chiwendu</span>
-                <span class="quiz__status-icon">
-                  <img src="../01_quiz-game/images/quiz__option-select.png" alt="Correct checkmark" aria-hidden="true">
-                </span>
-              </label>
-            </li>
+          <fieldset class="quiz__options-fieldset" style="border: none; padding: 0; margin: 0;">
+            <legend class="sr-only">Choose one option below</legend>
+            <ul class="quiz__options-list">
+              
+              <li class="quiz__option-item">
+                <input type="radio" id="opt-a" name="quiz-options" value="john" class="quiz__option-input">
+                <label for="opt-a" class="quiz__option-label">
+                  <span>a. John</span>
+                  <span class="quiz__status-icon">
+                    <img src="../01_quiz-game/assets/images/quiz__option-select.png" alt="Unchecked indicator" aria-hidden="true">
+                  </span>
+                </label>
+              </li>
 
-            <li class="quiz__option-item">
-              <input type="radio" id="opt-d" name="quiz-options" value="ifeanyi" class="quiz__option-input">
-              <label for="opt-d" class="quiz__option-label">
-                <span>d. Ifeanyi</span>
-                <span class="quiz__status-icon">
-                  <img src="../01_quiz-game/images/quiz__option-select.png" alt="Incorrect indicator" aria-hidden="true">
-                </span>
-              </label>
-            </li>
-          </ul>
-        </fieldset>
+              <li class="quiz__option-item">
+                <input type="radio" id="opt-b" name="quiz-options" value="chibueze" class="quiz__option-input" checked>
+                <label for="opt-b" class="quiz__option-label">
+                  <span>b. Chibueze</span>
+                  <span class="quiz__status-icon">
+                    <img src="../01_quiz-game/assets/images/quiz__option-select.png" alt="Selected layout indicator" aria-hidden="true">
+                  </span>
+                </label>
+              </li>
 
-        <!-- Contextual Feedback Block -->
-        <div class="quiz__feedback">
-          <p class="quiz__feedback-text quiz__feedback-text--wrong">Oops! What you mean?! <span aria-hidden="true">&#x1F602; &#x1F972;</span></p>
-          <p class="quiz__feedback-text quiz__feedback-text--right">Okay, okay. I see you! <span aria-hidden="true">&#x1F642;</span></p>
+              <li class="quiz__option-item">
+                <input type="radio" id="opt-c" name="quiz-options" value="chiwendu" class="quiz__option-input">
+                <label for="opt-c" class="quiz__option-label">
+                  <span>c. Chiwendu</span>
+                  <span class="quiz__status-icon">
+                    <img src="../01_quiz-game/assets/images/quiz__option-select.png" alt="Correct checkmark" aria-hidden="true">
+                  </span>
+                </label>
+              </li>
+
+              <li class="quiz__option-item">
+                <input type="radio" id="opt-d" name="quiz-options" value="ifeanyi" class="quiz__option-input">
+                <label for="opt-d" class="quiz__option-label">
+                  <span>d. Ifeanyi</span>
+                  <span class="quiz__status-icon">
+                    <img src="../01_quiz-game/assets/images/quiz__option-select.png" alt="Incorrect indicator" aria-hidden="true">
+                  </span>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+
+          <!-- Contextual Feedback Block -->
+          <div class="quiz__feedback">
+            <p class="quiz__feedback-text quiz__feedback-text--wrong">Oops! What you mean?! <span aria-hidden="true">&#x1F602; &#x1F972;</span></p>
+            <p class="quiz__feedback-text quiz__feedback-text--right">Okay, okay. I see you! <span aria-hidden="true">&#x1F642;</span></p>
+          </div>
         </div>
 
         <footer class="quiz__actions">
@@ -158,46 +170,47 @@
       <!-- ========================================== -->
       <!-- SCREEN 7: RESULTS VIEW                     -->
       <!-- ========================================== -->
-      <section class="quiz__container quiz__container--result inactive" aria-labelledby="result-title">
-        <div class="quiz__score-box">
-          <p class="quiz__score-label">Score:</p>
-          <h1 id="result-title" class="quiz__score-value">476</h1>
-          <p class="quiz__result-feedback">
-            Impressive! Almost as if you&apos;ve done this before. <span aria-hidden="true">&#x1F44F;</span>
-          </p>
-        </div>
-        
-        <div class="quiz__result-meta">
-          <div class="quiz__meta-item">
-            Time: <span class="quiz__meta-item--user">04:07</span>
-            <span class="quiz__meta-item--system">minutes</span>
+      <section class="quiz__container quiz__container--result js-quiz-result inactive" aria-labelledby="result-title">
+        <div class="quiz__contents">
+            <div class="quiz__score-box">
+            <p class="quiz__score-label">Score:</p>
+            <h1 id="result-title" class="quiz__score-value">476</h1>
+            <p class="quiz__result-feedback">
+              Impressive! Almost as if you&apos;ve done this before. <span aria-hidden="true">&#x1F44F;</span>
+            </p>
           </div>
-          <div class="quiz__meta-item">
-            Rank: <span class="quiz__meta-item--user">#6</span> 
-            <span class="quiz__meta-item--system">/213</span>
+          
+          <div class="quiz__result-meta">
+            <div class="quiz__meta-item">
+              Time: <span class="quiz__meta-item--user">04:07</span>
+              <span class="quiz__meta-item--system">minutes</span>
+            </div>
+            <div class="quiz__meta-item">
+              Rank: <span class="quiz__meta-item--user">#6</span> 
+              <span class="quiz__meta-item--system">/213</span>
+            </div>
           </div>
-        </div>
 
-        <!-- Collapsible Content Accordion Component -->
-        <div class="quiz__accordion">
-          <button type="button" class="quiz__accordion-trigger" aria-expanded="false" aria-controls="details-panel">
-            <span>Details:</span>
-            <i data-feather="chevron-down" class="quiz__accordion-arrow" aria-hidden="true"></i>
-          </button>
-          <div id="details-panel" class="quiz__accordion-content" role="region">
-            <ul class="quiz__details-list">
-              <li class="quiz__details-item">
-                Accuracy:
-                <div class="quiz__details-value"><span>8</span> /10</div>
-              </li>
-              <li class="quiz__details-item">
-                Pace:
-                <div class="quiz__details-value"><span>60s</span> /per question</div>
-              </li>
-            </ul>
+          <!-- Collapsible Content Accordion Component -->
+          <div class="quiz__accordion">
+            <button type="button" class="quiz__accordion-trigger" aria-expanded="false" aria-controls="details-panel">
+              <span>Details:</span>
+              <i data-feather="chevron-down" class="quiz__accordion-arrow" aria-hidden="true"></i>
+            </button>
+            <div id="details-panel" class="quiz__accordion-content" role="region">
+              <ul class="quiz__details-list">
+                <li class="quiz__details-item">
+                  Accuracy:
+                  <div class="quiz__details-value"><span>8</span> /10</div>
+                </li>
+                <li class="quiz__details-item">
+                  Pace:
+                  <div class="quiz__details-value"><span>60s</span> /per question</div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-
         <footer class="quiz__actions">
           <button type="button" class="quiz__btn-primary">Take Again</button>
           <button type="button" class="quiz__btn-secondary">See Leaderboard</button>
@@ -207,66 +220,68 @@
       <!-- ========================================== -->
       <!-- SCREEN 8: LEADERBOARD                      -->
       <!-- ========================================== -->
-      <section class="quiz__container quiz__container--leaderboard inactive aria-labelledby="leaderboard-title">
-        <div class="quiz__result-meta">
-          <div class="quiz__meta-item">
-            Time: <span class="quiz__meta-item--user">04:07</span>
-            <span class="quiz__meta-item--system">minutes</span>
-          </div>
-          <div class="quiz__meta-item">
-            Rank: <span class="quiz__meta-item--user">#6</span> 
-            <span class="quiz__meta-item--system">/213</span>
-          </div>
-        </div>
-
-        <p class="quiz__leaderboard-sub">Know where you stand</p>
-
-        <div class="quiz__leaderboard-wrapper">
-          <div class="quiz__leaderboard-header">
-            <h3 id="leaderboard-title">Leaderboard</h3>
-            <div class="quiz__leaderboard-actions">
-              <button type="button" class="quiz__btn-icon" aria-label="Search Leaderboard"><i data-feather="search" aria-hidden="true"></i></button>
-              <button type="button" class="quiz__btn-icon" aria-label="Center on my rank"><i data-feather="crosshair" aria-hidden="true"></i></button>
-              <button type="button" class="quiz__btn-icon" aria-label="Filter rankings"><i data-feather="chevron-down" aria-hidden="true"></i></button>
+      <section class="quiz__container quiz__container--leaderboard js-quiz-leaderboard inactive aria-labelledby="leaderboard-title">
+        <div class="quiz__contents">
+            <div class="quiz__result-meta">
+            <div class="quiz__meta-item">
+              Time: <span class="quiz__meta-item--user">04:07</span>
+              <span class="quiz__meta-item--system">minutes</span>
+            </div>
+            <div class="quiz__meta-item">
+              Rank: <span class="quiz__meta-item--user">#6</span> 
+              <span class="quiz__meta-item--system">/213</span>
             </div>
           </div>
-          
-          <ul class="quiz__leaderboard-list">
-            <li class="quiz__leaderboard-item">
-              <div class="quiz__leaderboard-pos quiz__leaderboard-pos-first">1</div>
-              <p class="quiz__leaderboard-name">Th3w1z</p>
-              <div class="quiz__leaderboard-score">
-                <img src="../01_quiz-game/images/1st-place-medal-svgrepo-com 1.png" alt="Gold Medal" class="quiz__medal">
-                <span class="quiz__score-digits">1487</span>
+
+          <p class="quiz__leaderboard-sub">Know where you stand</p>
+
+          <div class="quiz__leaderboard-wrapper">
+            <div class="quiz__leaderboard-header">
+              <h3 id="leaderboard-title">Leaderboard</h3>
+              <div class="quiz__leaderboard-actions">
+                <button type="button" class="quiz__btn-icon" aria-label="Search Leaderboard"><i data-feather="search" aria-hidden="true"></i></button>
+                <button type="button" class="quiz__btn-icon" aria-label="Center on my rank"><i data-feather="crosshair" aria-hidden="true"></i></button>
+                <button type="button" class="quiz__btn-icon" aria-label="Filter rankings"><i data-feather="chevron-down" aria-hidden="true"></i></button>
               </div>
-            </li>
-            <li class="quiz__leaderboard-item">
-              <div class="quiz__leaderboard-pos quiz__leaderboard-pos-second">2</div>
-              <p class="quiz__leaderboard-name">Feyi</p>
-              <div class="quiz__leaderboard-score">
-                <img src="../01_quiz-game/images/2nd-place-medal-svgrepo-com 1.png" alt="Silver Medal" class="quiz__medal">
-                <span class="quiz__score-digits">1209</span>
-              </div>
-            </li>
-            <li class="quiz__leaderboard-item">
-              <div class="quiz__leaderboard-pos quiz__leaderboard-pos-third">3</div>
-              <p class="quiz__leaderboard-name">Hood</p>
-              <div class="quiz__leaderboard-score">
-                <img src="../01_quiz-game/images/3rd-place-medal-svgrepo-com 1.png" alt="Bronze Medal" class="quiz__medal">
-                <span class="quiz__score-digits">1209</span>
-              </div>
-            </li>
-            <li class="quiz__leaderboard-item quiz__leaderboard-item--placeholder" aria-hidden="true">
-              ...
-            </li>
-            <li class="quiz__leaderboard-item quiz__leaderboard-item--current-user">
-              <div class="quiz__leaderboard-pos">23</div>
-              <p class="quiz__leaderboard-name">Ewa</p>
-              <div class="quiz__leaderboard-score">
-                <span class="quiz__score-digits">476</span>
-              </div>
-            </li>
-          </ul>
+            </div>
+            
+            <ul class="quiz__leaderboard-list">
+              <li class="quiz__leaderboard-item">
+                <div class="quiz__leaderboard-pos quiz__leaderboard-pos-first">1</div>
+                <p class="quiz__leaderboard-name">Th3w1z</p>
+                <div class="quiz__leaderboard-score">
+                  <img src="../01_quiz-game/assets/images/1st-place-medal-svgrepo-com 1.png" alt="Gold Medal" class="quiz__medal">
+                  <span class="quiz__score-digits">1487</span>
+                </div>
+              </li>
+              <li class="quiz__leaderboard-item">
+                <div class="quiz__leaderboard-pos quiz__leaderboard-pos-second">2</div>
+                <p class="quiz__leaderboard-name">Feyi</p>
+                <div class="quiz__leaderboard-score">
+                  <img src="../01_quiz-game/assets/images/2nd-place-medal-svgrepo-com 1.png" alt="Silver Medal" class="quiz__medal">
+                  <span class="quiz__score-digits">1209</span>
+                </div>
+              </li>
+              <li class="quiz__leaderboard-item">
+                <div class="quiz__leaderboard-pos quiz__leaderboard-pos-third">3</div>
+                <p class="quiz__leaderboard-name">Hood</p>
+                <div class="quiz__leaderboard-score">
+                  <img src="../01_quiz-game/assets/images/3rd-place-medal-svgrepo-com 1.png" alt="Bronze Medal" class="quiz__medal">
+                  <span class="quiz__score-digits">1209</span>
+                </div>
+              </li>
+              <li class="quiz__leaderboard-item quiz__leaderboard-item--placeholder" aria-hidden="true">
+                ...
+              </li>
+              <li class="quiz__leaderboard-item quiz__leaderboard-item--current-user">
+                <div class="quiz__leaderboard-pos">23</div>
+                <p class="quiz__leaderboard-name">Ewa</p>
+                <div class="quiz__leaderboard-score">
+                  <span class="quiz__score-digits">476</span>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <footer class="quiz__actions">
@@ -283,7 +298,7 @@
       </p>
     </footer>
 
-    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="../01_quiz-game/assets/icons/feather.min.js"></script>
     <script src="../01_quiz-game/index.js"></script>
     <script>
       feather.replace();

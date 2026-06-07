@@ -69,6 +69,10 @@ button:not(:disabled):hover {
   box-shadow: none;
 }
 
+button:not(:disabled):active {
+  transform: scale(0.9);
+}
+
 body {
   font-family: 'Inter', -apple-system, sans-serif;
   font-size: 1.6rem;
@@ -90,7 +94,7 @@ body {
   background-color: rgb(var(--bg-card));
   width: 100%;
   max-width: 72rem;
-  min-height: 64rem;
+  min-height: 4rem;
   border-radius: var(--radius-xlg);
   padding: clamp(1.6rem, 5vw, 6.4rem);
   box-shadow: 0 1px 12px rgba(var(--text-primary), 0.03);
@@ -126,6 +130,8 @@ body {
    3. SCREEN CONTAINERS & FLOW MANAGEMENT
    ========================================================================== */
 .quiz__container {
+  flex: 1;
+
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -136,11 +142,17 @@ body {
   display: none;
 }
 
+.quiz__contents  {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
 .quiz__title {
   font-size: clamp(3.2rem, 5vw, 4.8rem);
   font-weight: 700;
   line-height: 1.1;
-  margin-bottom: 16px;
   letter-spacing: -0.5px;
 }
 
@@ -148,21 +160,18 @@ body {
   font-size: 2rem;
   font-weight: 400;
   color: rgb(var(--text-primary));
-  margin-bottom: 8px;
 }
 
 .quiz__intro-subtext {
   font-size: 1.4rem;
   color: rgb(var(--text-secondary));
   line-height: 1.5;
-  margin-bottom: 16px;
 }
 
 .quiz__intro-caution {
   font-size: 1.2rem;
   color: rgb(var(--text-secondary));
   line-height: 1.4;
-  margin-bottom: 24px;
 }
 
 /* ==========================================================================
@@ -184,6 +193,10 @@ body {
   gap: .4rem;
   border-radius: 6px;
   transition: var(--transition);
+}
+
+#btn-prev-section {
+  font-size: 1.6rem;
 }
 
 /* Metrics Dashboard Panel */
@@ -336,6 +349,10 @@ body {
   flex-direction: column;
 }
 
+.quiz__actions .quiz__actions {
+  margin-top: 0;
+}
+
 .quiz__field-group {
   width: 100%;
 }
@@ -357,19 +374,15 @@ body {
 }
 
 /* Main Premium Button Engine */
-.quiz__btn-primary {
+.quiz__btn-primary,
+.quiz__btn-secondary {
+  flex: 1;
   height: 4rem;
   padding: 0 1.6rem;
 
   flex-grow: 1;
-  background-color: rgb(var(--btn-primary-fill));
   border-radius: var(--radius-md);
-  box-shadow:
-    0 2px 2px rgba(var(--text-primary), 0.20),      /* outer shadow */
-    inset 0 4px 4px rgba(var(--text-inverse), 0.3), /* top highlight */
-    inset 0 -4px 8px rgba(var(--text-primary), 0.3); /* inner shadow */
   
-  color: rgb(var(--text-inverse));
   font-size: 1.4rem;
   font-weight: 600;
   text-align: center;
@@ -377,24 +390,24 @@ body {
   transition: var(--transition);
 }
 
-.quiz__btn-secondary {
-  height: 4rem;
-  padding: 0 1.6rem;
+.quiz__btn-primary {
+  background-color: rgb(var(--btn-primary-fill));
+  box-shadow:
+    0 2px 2px rgba(var(--text-primary), 0.20),      /* outer shadow */
+    inset 0 4px 4px rgba(var(--text-inverse), 0.3), /* top highlight */
+    inset 0 -4px 8px rgba(var(--text-primary), 0.3); /* inner shadow */
+  
+  color: rgb(var(--text-inverse));
+}
 
-  flex-grow: 1;
+.quiz__btn-secondary {
   background-color: rgb(var(--btn-secondary-fill));
-  border-radius: var(--radius-md);
   box-shadow:
     0 2px 2px rgba(var(--text-primary), 0.20),      /* outer shadow */
     inset 0 4px 4px rgba(var(--text-inverse), 0.3), /* top highlight */
     inset 0 -4px 8px rgba(var(--text-primary), 0.3); /* inner shadow */
   
   color: rgb(var(--text-primary));
-  font-size: 1.4rem;
-  font-weight: 600;
-  text-align: center;
-
-  transition: var(--transition);
 }
 
 /* Icon Buttons inside dashboards */
