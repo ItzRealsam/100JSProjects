@@ -3,7 +3,7 @@
  * QUIZ APP ARCHITECTURE ENGINE
  * ==========================================================================
  */
-const QuizApp = {
+export const QuizApp = {
   // Centralized DOM cache storage registry
   elements: {},
   
@@ -169,19 +169,21 @@ const QuizApp = {
    */
   updateBackButtonVisibility() {
     
-    // Completely hide the button if there is on screen history
+    // Completely hide the button if there is no screen history
     if (this.screenHistory.length === 0) {
-      this.elements.btnBack.hidden = true;
+      // 1. Safely redirect focus away if the user is currently on it
+      if (document.activeElement === this.elements.btnBack) {
+        this.elements.shell.focus(); 
+      }
+      this.elements.btnBack.style.display = 'none';
       return;
     }
 
     // Ensure it is visible when there is screen history
-    this.elements.btnBack.hidden = false;
+    this.elements.btnBack.style.display = 'inline-flex';
 
-    // Disabled back button if the active container is the Main Quiz Questions screen
-    const isQuestionScreen =
-      this.currentScreen === this.elements.content;
-
+    // Disable back button if the active container is the Main Quiz Questions screen
+    const isQuestionScreen = this.currentScreen === this.elements.content;
     this.elements.btnBack.disabled = isQuestionScreen;
   },
 
@@ -206,9 +208,3 @@ const QuizApp = {
     );
   }
 };
-
-// Safe lifecycle app bootstrapper
-document.addEventListener('DOMContentLoaded', () => {
-  QuizApp.updateQuizHeaderName();
-  QuizApp.init();
-});
