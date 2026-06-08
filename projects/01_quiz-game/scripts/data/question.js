@@ -3,19 +3,19 @@ export const quizQuestions = [
     id: 'sam-middle-name',
     category: 'personal',
     difficulty: 'easy',
-    question: "What is Samuel's middle name?",
+    question: `What is Samuel&apos;s middle name?`,
     options: [
       'John',
       'Chibueze',
       'Chiwendu',
       'Ifeanyi'
     ],
-    answer: 3,
+    answer: 2,
     explanation:
-      "Samuel's middle name is Chiwendu.",
+      `Samuel&apos;s middle name is Chiwendu.`,
     feedbackMsgHTML: {
-      valid: `Oops! What you mean?! <span aria-hidden="true">&#x1F602; &#x1F972;</span>`,
-      invalid: `<span aria-hidden="true">&#x1F642;</span>`
+      valid: `Okay, okay. I see you! <span aria-hidden="true">&#x1F642;</span>`,
+      invalid: `Oops! What you mean?! <span aria-hidden="true">&#x1F602; &#x1F972;</span>`
     },
     tags: [
       'name'
@@ -25,19 +25,19 @@ export const quizQuestions = [
     id: 'sam-sibling-count',
     category: 'personal',
     difficulty: 'easy',
-    question: "How many siblings does Samuel's have?",
+    question: `How many siblings does Samuel have?`,
     options: [
       '4',
       '3',
       '2',
       '1'
     ],
-    answer: 4,
+    answer: 3,
     explanation:
       "Samuel has just one sibling",
     feedbackMsgHTML: {
-      valid: `Oops! What you mean?! <span aria-hidden="true">&#x1F602; &#x1F972;</span>`,
-      invalid: `<span aria-hidden="true">&#x1F642;</span>`
+      valid: `Okay, okay. I see you! <span aria-hidden="true">&#x1F642;</span>`,
+      invalid: `Oops! What you mean?! <span aria-hidden="true">&#x1F602; &#x1F972;</span>`
     },
     tags: [
       'family',
@@ -48,19 +48,19 @@ export const quizQuestions = [
     id: 'sam-brother-name',
     category: 'personal',
     difficulty: 'easy',
-    question: "What is Samuel's brother's name?",
+    question: `What is Samuel&apos;s brother&apos;s name?`,
     options: [
       'Onyekachi',
       'Wisdom',
       'Ifeanyi',
       'Liberty'
     ],
-    answer: 2,
+    answer: 1,
     explanation:
-      "Samuel's brother's name is Wisdom.",
+      `Samuel&apos;s brother&apos;s name is Wisdom.`,
     feedbackMsgHTML: {
-      valid: `Oops! What you mean?! <span aria-hidden="true">&#x1F602; &#x1F972;</span>`,
-      invalid: `<span aria-hidden="true">&#x1F642;</span>`
+      valid: 'Okay, okay. I see you! <span aria-hidden="true">&#x1F642;</span>',
+      invalid: 'Oops! What you mean?! <span aria-hidden="true">&#x1F602; &#x1F972;</span>'
     },
     tags: [
       'name',

@@ -79,8 +79,10 @@
       <!-- SCREEN 3-6: MAIN QUIZ INTERACTION          -->
       <!-- ========================================== -->
       <section class="quiz__container quiz__container--content js-quiz-content inactive" aria-labelledby="question-title">
-        <div class="quiz__contents">
-              <nav class="quiz__nav" aria-label="Quiz Navigation">
+        <div class="quiz__contents js-quiz-questions">
+          
+          <!--
+          <nav class="quiz__nav" aria-label="Quiz Navigation">
             <button disabled class="quiz__nav-btn" aria-label="Go to previous question">
               <i data-feather="chevron-left" aria-hidden="true"></i> Prev
             </button>
@@ -88,30 +90,31 @@
               Next <i data-feather="chevron-right" aria-hidden="true"></i>
             </button>
           </nav>
-          
+          -->
+
           <div class="quiz__metrics-bar">
             <div class="quiz__metrics-row">
               <div class="quiz__progress-text" id="progress-lbl">
-                Question <span class="quiz__progress-current">1</span> of <span class="quiz__progress-length">20</span>
+                Question <span class="quiz__progress-current js-quiz-progress-current">1</span> of <span class="quiz__progress-length js-quiz-progress-length">20</span>
               </div>
-              <div class="quiz__streak" aria-label="1 question correct answer streak">
+              <div class="quiz__streak js-quiz-streak" aria-label="1 question correct answer streak">
                 <span aria-hidden="true">&#x1F525;</span> <span>1</span>
               </div>
               <div class="quiz__timer" aria-label="Time remaining: 4 minutes 59 seconds out of 5 minutes">
-                Time: <span class="quiz__timer-current">04:59</span><span class="quiz__timer-total">/05:00</span>
+                Time: <span class="quiz__timer-current js-quiz-timer-current">04:59</span><span class="quiz__timer-total js-quiz-timer-total">/05:00</span>
               </div>
             </div>
             
             <div class="quiz__progress-track" role="progressbar" aria-labelledby="progress-lbl" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
-              <div class="quiz__progress-fill" style="width: 5%"></div>
+              <div class="quiz__progress-fill js-quiz-progress-fill" style="width: 5%"></div>
             </div>
           </div>
 
-          <h2 id="question-title" class="quiz__question">What is Samuel&apos;s middle name?</h2>
+          <h2 id="question-title" class="quiz__question js-quiz-question">What is Samuel&apos;s middle name?</h2>
 
           <fieldset class="quiz__options-fieldset" style="border: none; padding: 0; margin: 0;">
             <legend class="sr-only">Choose one option below</legend>
-            <ul class="quiz__options-list">
+            <ul class="quiz__options-list js-quiz-options-list">
               
               <li class="quiz__option-item">
                 <input type="radio" id="opt-a" name="quiz-options" value="john" class="quiz__option-input">
@@ -124,7 +127,7 @@
               </li>
 
               <li class="quiz__option-item">
-                <input type="radio" id="opt-b" name="quiz-options" value="chibueze" class="quiz__option-input" checked>
+                <input type="radio" id="opt-b" name="quiz-options" value="chibueze" class="quiz__option-input">
                 <label for="opt-b" class="quiz__option-label">
                   <span>b. Chibueze</span>
                   <span class="quiz__status-icon">
@@ -156,14 +159,14 @@
           </fieldset>
 
           <!-- Contextual Feedback Block -->
-          <div class="quiz__feedback">
-            <p class="quiz__feedback-text quiz__feedback-text--wrong">Oops! What you mean?! <span aria-hidden="true">&#x1F602; &#x1F972;</span></p>
-            <p class="quiz__feedback-text quiz__feedback-text--right">Okay, okay. I see you! <span aria-hidden="true">&#x1F642;</span></p>
+          <div class="quiz__feedback js-quiz-feedback">
+            <p class="quiz__feedback-text quiz__feedback-text--wrong js-quiz-feedback-text-wrong">Oops! What you mean?! <span aria-hidden="true">&#x1F602; &#x1F972;</span></p>
+            <p class="quiz__feedback-text quiz__feedback-text--right js-quiz-feedback-text-right">Okay, okay. I see you! <span aria-hidden="true">&#x1F642;</span></p>
           </div>
         </div>
 
         <footer class="quiz__actions">
-          <button type="button" class="quiz__btn-primary">Submit</button>
+          <button type="button" class="quiz__btn-primary" id="btn-submit-answer">Submit</button>
         </footer>
       </section>
 
@@ -174,19 +177,19 @@
         <div class="quiz__contents">
             <div class="quiz__score-box">
             <p class="quiz__score-label">Score:</p>
-            <h1 id="result-title" class="quiz__score-value">476</h1>
-            <p class="quiz__result-feedback">
+            <h1 id="result-title" class="quiz__score-value js-quiz-user-score">476</h1>
+            <p class="quiz__result-feedback js-quiz-result-feedback">
               Impressive! Almost as if you&apos;ve done this before. <span aria-hidden="true">&#x1F44F;</span>
             </p>
           </div>
           
           <div class="quiz__result-meta">
             <div class="quiz__meta-item">
-              Time: <span class="quiz__meta-item--user">04:07</span>
-              <span class="quiz__meta-item--system">minutes</span>
+              Time: <span class="quiz__meta-item--user js-quiz-meta-user-time-spent">04:07</span>
+              <span class="quiz__meta-item--system">s</span>
             </div>
             <div class="quiz__meta-item">
-              Rank: <span class="quiz__meta-item--user">#6</span> 
+              Rank: <span class="quiz__meta-item--user js-quiz-meta-user-rank">#6</span> 
               <span class="quiz__meta-item--system">/213</span>
             </div>
           </div>
@@ -201,26 +204,30 @@
               <ul class="quiz__details-list">
                 <li class="quiz__details-item">
                   Accuracy:
-                  <div class="quiz__details-value"><span>8</span> /10</div>
+                  <div class="quiz__details-value js-quiz-meta-user-accuracy"><span>8</span> /10</div>
                 </li>
                 <li class="quiz__details-item">
                   Pace:
-                  <div class="quiz__details-value"><span>60s</span> /per question</div>
+                  <div class="quiz__details-value js-quiz-meta-user-pace"><span>60s</span> /per question</div>
+                </li>
+                <li class="quiz__details-item js-quiz-meta-user-streak">
+                  Streak:
+                  <div class="quiz__details-value"><span>60s</span>&#x1F525;</div>
                 </li>
               </ul>
             </div>
           </div>
         </div>
         <footer class="quiz__actions">
-          <button type="button" class="quiz__btn-primary">Take Again</button>
-          <button type="button" class="quiz__btn-secondary">See Leaderboard</button>
+          <button type="button" class="quiz__btn-primary" id="btn-retake-quiz">Take Again</button>
+          <button type="button" class="quiz__btn-secondary" id="btn-see-leaderboard">See Leaderboard</button>
         </footer>
       </section>
 
       <!-- ========================================== -->
       <!-- SCREEN 8: LEADERBOARD                      -->
       <!-- ========================================== -->
-      <section class="quiz__container quiz__container--leaderboard js-quiz-leaderboard inactive aria-labelledby="leaderboard-title">
+      <section class="quiz__container quiz__container--leaderboard js-quiz-leaderboard inactive" aria-labelledby="leaderboard-title">
         <div class="quiz__contents">
             <div class="quiz__result-meta">
             <div class="quiz__meta-item">

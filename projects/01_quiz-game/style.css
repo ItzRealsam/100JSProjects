@@ -246,6 +246,12 @@ body {
 /* ==========================================================================
    5. OPTIONS SELECTION LIST (Forms Layout)
    ========================================================================== */
+.quiz__options-fieldset {
+  border: none;
+  padding: 0;
+  margin-top: 1.6rem;
+}
+
 .quiz__options-list {
   list-style: none;
   display: flex;
@@ -302,12 +308,15 @@ body {
   background-color: rgba(var(--color-selected), 0.1);
 }
 
+/* Force correct and incorrect states to override standard checked selectors */
+.quiz__option-item--correct .quiz__option-input:checked + .quiz__option-label,
 .quiz__option-item--correct .quiz__option-label {
   border: 2px solid rgb(var(--color-success));
   background-color: rgba(var(--color-success), 0.1);
   color: rgb(var(--color-success));
 }
 
+.quiz__option-item--incorrect .quiz__option-input:checked + .quiz__option-label,
 .quiz__option-item--incorrect .quiz__option-label {
   border: 2px solid rgb(var(--color-error));
   background-color: rgba(var(--color-error), 0.1);
