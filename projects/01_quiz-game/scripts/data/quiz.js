@@ -828,6 +828,7 @@ export const QuizApp = {
               
               setTimeout(() => {
                 freshButton.innerHTML = '<i data-feather="copy" aria-hidden="true"></i>';
+                this.refreshIcons();
               }, 2000);
             } catch (err) {
               console.error('Failed to copy text: ', err);
