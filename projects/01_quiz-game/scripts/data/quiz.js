@@ -96,7 +96,6 @@ export const QuizApp = {
       progressLength:        document.querySelector('.js-quiz-progress-length'),
       streakCounter:         document.querySelector('.js-quiz-streak span:last-child'),
       timerText:             document.querySelector('.js-quiz-timer-current'),
-      timerTotalText:        document.querySelector('.js-quiz-timer-total'),
       progressFill:          document.querySelector('.js-quiz-progress-fill'),
       feedback:              document.querySelector('.js-quiz-feedback'),
       feedbackRight:         document.querySelector('.js-quiz-feedback-text-right'),
@@ -153,7 +152,7 @@ export const QuizApp = {
     const required = [
       'shell', 'intro', 'onboard', 'content', 'result', 'leaderboard', 'questionsContainer',
       'screens', 'formOnboard', 'inputUserName', 'questionTitle', 'optionsList', 'progressCurrent',
-      'progressLength', 'streakCounter', 'timerText', 'timerTotalText', 'progressFill', 'feedback',
+      'progressLength', 'streakCounter', 'timerText', 'progressFill', 'feedback',
       'feedbackRight', 'feedbackWrong', 'resultScore', 'resultFeedback', 'resultUserTimeSpent',
       'resultUserRank', 'resultTotalUsers', 'resultPace', 'resultStreak', 'leaderboardUserTimeSpent', 
       'leaderboardUserRank', 'leaderboardTotalUsers', 'btnBack', 'btnStart', 'btnStartAnon',
