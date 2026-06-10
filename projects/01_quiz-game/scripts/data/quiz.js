@@ -312,6 +312,47 @@ export const QuizApp = {
     }
   },
 
+  buildQuizQuestions(allQuestions) {
+    const easyQuestions = allQuestions.filter(
+      q => q.difficulty === 'easy'
+    );
+
+    const mediumQuestions = allQuestions.filter(
+      q => q.difficulty === 'medium'
+    );
+
+    const hardQuestions = allQuestions.filter(
+      q => q.difficulty === 'hard'
+    );
+
+    if (
+      easyQuestions.length < 8 ||
+      mediumQuestions.length < 7 ||
+      hardQuestions.length < 5
+    ) {
+      throw new Error(
+        `Not enough questions available.
+        Need:
+        Easy: 8
+        Medium: 7
+        Hard: 5
+        
+        Found:
+        Easy: ${easyQuestions.length}
+        Medium: ${mediumQuestions.length}
+        Hard: ${hardQuestions.length}`
+      );
+    }
+
+    const selectedQuestions = [
+      ...this.shuffleQuestions([...easyQuestions]).slice(0, 8),
+      ...this.shuffleQuestions([...mediumQuestions]).slice(0, 7),
+      ...this.shuffleQuestions([...hardQuestions]).slice(0, 5)
+    ];
+
+    return this.shuffleQuestions(selectedQuestions);
+  },
+
   async startQuiz() {
     // 1. Prevent duplicate submission spam requests by visually locking inputs immediately
     if (this.elements.btnStartWithName) this.elements.btnStartWithName.disabled = true;
@@ -335,8 +376,8 @@ export const QuizApp = {
       // 3. Instantiate domain structures using question.js module mechanics
       const instantiatedQuestions = createQuizEngineQuestions(cloudQuestions);
       
-      // 4. Shuffle collection and mount components to state
-      this.quizState.questions = this.shuffleQuestions([...instantiatedQuestions]);
+      // 4. Proceed with drafted questions
+      this.quizState.questions = this.buildQuizQuestions(instantiatedQuestions);
       
     } catch (err) {
       console.error("Supabase Synchronization Failed:", err.message);
@@ -570,14 +611,36 @@ export const QuizApp = {
     }
 
     this.quizState.streak++;
-    this.quizState.bestStreak = Math.max(this.quizState.bestStreak, this.quizState.streak);
 
-    const difficultyPoints = { easy: 100, medium: 200, hard: 300 };
-    const base = difficultyPoints[question.difficulty] || 100;
-    const speedBonus = Math.max(0, 15000 - timeSpent) / 50;
-    const streakBonus = this.quizState.streak * 10;
+    this.quizState.bestStreak = Math.max(
+      this.quizState.bestStreak,
+      this.quizState.streak
+    );
 
-    const questionScore = base + speedBonus + streakBonus;
+    const difficultyPoints = {
+      easy: 100,
+      medium: 200,
+      hard: 300
+    };
+
+    const baseScore =
+      difficultyPoints[question.difficulty] || 100;
+
+    // Max = 100 points per question
+    const speedBonus =
+      Math.max(0, 10000 - timeSpent) / 100;
+
+    // Reward consistency
+    const streakBonus =
+      this.quizState.streak * 10;
+
+    const questionScore =
+      Math.round(
+        baseScore +
+        speedBonus +
+        streakBonus
+      );
+
     this.quizState.score += questionScore;
 
     return questionScore;
@@ -646,7 +709,8 @@ export const QuizApp = {
       started_at: calculatedStartTime.toISOString(),
       finished_at: nowServerTime.toISOString(),
       total_duration_seconds: Number(totalTimeSpent.toFixed(2)),
-      answers_breakdown: answersBreakdownPayload // Feeds cleanly into PostgreSQL JSONB block
+      answers_breakdown: answersBreakdownPayload, // Feeds cleanly into PostgreSQL JSONB block
+      leaderboard_month: this.getLeaderboardMonth(),
     };
 
     try {
@@ -667,9 +731,10 @@ export const QuizApp = {
       const { data: globalRecords, error: fetchError } = await supabase
         .from('quiz_leaderboard')
         .select('*')
+        .eq('leaderboard_month', this.getLeaderboardMonth())
         .order('score', { ascending: false })
         .order('total_duration_seconds', { ascending: true });
-
+        
       if (fetchError) throw fetchError;
 
       const sanitisedRecords = globalRecords || [];
@@ -843,6 +908,12 @@ export const QuizApp = {
 
   },
 
+  getLeaderboardMonth() {
+    return new Date()
+      .toISOString()
+      .slice(0, 7);
+  },
+
   renderLeaderboardUI(records) {
     const listWrapper = document.querySelector('.quiz__leaderboard-list');
     if (!listWrapper) {
@@ -912,10 +983,32 @@ export const QuizApp = {
   },
 
   getResultMessage(score) {
-    if (score >= 2000) return 'You know Sam suspiciously well 😳';
-    if (score >= 1500) return 'Impressive. You definitely pay attention 👏';
-    if (score >= 1000) return 'Not bad at all 🙂';
-    return 'Samuel is disappointed 😂';
+
+    if (score >= 7000) {
+      return 'Legendary! Samuel might know YOU now 😳🔥';
+    }
+
+    if (score >= 6000) {
+      return 'Outstanding! You know Samuel extremely well 👏';
+    }
+
+    if (score >= 5000) {
+      return 'Excellent work! You definitely pay attention 😎';
+    }
+
+    if (score >= 4000) {
+      return 'Pretty solid! You know quite a lot 🙂';
+    }
+
+    if (score >= 3000) {
+      return 'Not bad. Room for improvement 👍';
+    }
+
+    if (score >= 1500) {
+      return 'You tried 😂. Maybe spend more time with Samuel.';
+    }
+
+    return 'Samuel is disappointed 😂💀';
   },
 
   async showLeaderboard() {
@@ -923,6 +1016,7 @@ export const QuizApp = {
       const { data, error } = await supabase
         .from('quiz_leaderboard')
         .select('*')
+        .eq('leaderboard_month', this.getLeaderboardMonth())
         .order('score', { ascending: false });
 
       if (error) throw error;
