@@ -566,6 +566,7 @@ body {
   flex-grow: 1;
   border: 0.5px solid rgb(var(--border-default));
   border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 
 .quiz__leaderboard-sub {
