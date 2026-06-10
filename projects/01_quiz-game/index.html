@@ -109,13 +109,13 @@
             </div>
             
             <div class="quiz__progress-track" role="progressbar" aria-labelledby="progress-lbl" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
-              <div class="quiz__progress-fill js-quiz-progress-fill" style="width: 5%"></div>
+              <div class="quiz__progress-fill js-quiz-progress-fill"></div>
             </div>
           </div>
 
           <h2 id="question-title" class="quiz__question js-quiz-question">What is Samuel&apos;s middle name?</h2>
 
-          <fieldset class="quiz__options-fieldset" style="border: none; padding: 0; margin: 0;">
+          <fieldset class="quiz__options-fieldset">
             <legend class="sr-only">Choose one option below</legend>
             <ul class="quiz__options-list js-quiz-options-list">
               
@@ -180,7 +180,10 @@
         <div class="quiz__contents">
             <div class="quiz__score-box">
             <p class="quiz__score-label">Score:</p>
-            <h1 id="result-title" class="quiz__score-value js-quiz-user-score">476</h1>
+            <div class="quiz__score-container">
+              <h1 id="result-title" class="quiz__score-value js-quiz-user-score">476</h1>
+              <button type="button" class="quiz__btn-icon" aria-label="Copy result link" id="btn-copy-result-link"><i data-feather="copy" aria-hidden="true"></i></button>
+            </div>
             <p class="quiz__result-feedback js-quiz-result-feedback">
               Impressive! Almost as if you&apos;ve done this before. <span aria-hidden="true">&#x1F44F;</span>
             </p>
@@ -199,11 +202,11 @@
 
           <!-- Collapsible Content Accordion Component -->
           <div class="quiz__accordion">
-            <button type="button" class="quiz__accordion-trigger" aria-expanded="false" aria-controls="details-panel">
+            <button type="button" class="quiz__accordion-trigger" aria-expanded="false" aria-controls="details-panel" id="btn-accordion-trigger">
               <span>Details:</span>
               <i data-feather="chevron-down" class="quiz__accordion-arrow" aria-hidden="true"></i>
             </button>
-            <div id="details-panel" class="quiz__accordion-content" role="region">
+            <div id="details-panel" class="quiz__accordion-content js-quiz-result-accordion-content" role="region">
               <ul class="quiz__details-list">
                 <li class="quiz__details-item">
                   Accuracy:

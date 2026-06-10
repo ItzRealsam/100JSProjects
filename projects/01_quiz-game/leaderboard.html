@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard · Realsam Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="quiz">
+
+    <header class="quiz__header js-quiz-header">
+      <a href="../01_quiz-game/index.html" class="quiz__nav-btn" aria-label="Go to previous section" style="text-decoration:none;">
+        <i data-feather="arrow-left"></i> Back to Quiz
+      </a>
+      <div class="quiz__brand" aria-label="Quiz App Home">
+        <img src="../../assets/images/realsam_logo.png" alt="The Realsam Logo" class="quiz__brand-logo">
+        Quiz
+      </div>
+      <div class="quiz__user-greeting js-user-greeting">
+        Hello! <span aria-hidden="true">&#x1F44B;</span>
+      </div>
+    </header>
+
+    <section class="quiz__container quiz__container--leaderboard">
+      <div class="quiz__contents">
+
+        <!-- Highlighted result card (shown only when ?result=ID is in URL) -->
+        <div class="js-result-card" style="display:none;">
+          <div class="quiz__score-box">
+            <p class="quiz__score-label">Score:</p>
+            <h1 class="quiz__score-value js-rc-score">—</h1>
+            <p class="quiz__result-feedback js-rc-feedback"></p>
+          </div>
+          <div class="quiz__result-meta">
+            <div class="quiz__meta-item">
+              Time: <span class="quiz__meta-item--user js-rc-time">—</span>
+            </div>
+            <div class="quiz__meta-item">
+              Rank: <span class="quiz__meta-item--user js-rc-rank">—</span>
+              <span class="quiz__meta-item--system js-rc-total"></span>
+            </div>
+          </div>
+        </div>
+
+        <p class="quiz__leaderboard-sub">Global Rankings</p>
+
+        <div class="quiz__leaderboard-wrapper">
+          <div class="quiz__leaderboard-header">
+            <h3>Leaderboard</h3>
+          </div>
+          <ul class="quiz__leaderboard-list js-leaderboard-list">
+            <li class="quiz__leaderboard-item">
+              <p style="opacity:0.5; padding: 1rem;">Loading...</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="quiz-footer">
+    <p class="quiz-footer__text">
+      Designed and developed by realsam. Copyright © 2026
+    </p>
+  </footer>
+
+  <script src="../01_quiz-game/assets/icons/feather.min.js"></script>
+  <script type="module" src="../01_quiz-game/scripts/leaderboard.js"></script>
+  <script>
+    feather.replace();
+  </script>
+</body>
+</html>

@@ -110,6 +110,7 @@ export const QuizApp = {
       resultAccuracy:        document.querySelector('.js-quiz-result-meta-user-accuracy'),
       resultPace:            document.querySelector('.js-quiz-result-meta-user-pace span:last-child'),
       resultStreak:          document.querySelector('.js-quiz-result-meta-user-streak span:last-child'),
+      resultAccordionPanel:  document.querySelector('.js-quiz-result-accordion-content'),
 
       // Leaderboard Screen
       leaderboardUserTimeSpent:   document.querySelector('.js-quiz-leaderboard-meta-user-time-spent'),
@@ -124,6 +125,8 @@ export const QuizApp = {
       btnStartAnon:          document.getElementById('btn-start-quiz-anon'),
       btnStartWithName:      document.getElementById('btn-start-quiz-name'),
       btnSubmitAnswer:       document.getElementById('btn-submit-answer'),
+      btnCopyResultLink:       document.getElementById('btn-copy-result-link'),
+      btnAccordionTrigger:   document.getElementById('btn-accordion-trigger'),
       btnRetakeQuiz:         document.getElementById('btn-retake-quiz'),
       btnSeeLeaderboard:     document.getElementById('btn-see-leaderboard'),
     };
@@ -154,9 +157,9 @@ export const QuizApp = {
       'screens', 'formOnboard', 'inputUserName', 'questionTitle', 'optionsList', 'progressCurrent',
       'progressLength', 'streakCounter', 'timerText', 'progressFill', 'feedback',
       'feedbackRight', 'feedbackWrong', 'resultScore', 'resultFeedback', 'resultUserTimeSpent',
-      'resultUserRank', 'resultTotalUsers', 'resultPace', 'resultStreak', 'leaderboardUserTimeSpent', 
-      'leaderboardUserRank', 'leaderboardTotalUsers', 'btnBack', 'btnStart', 'btnStartAnon',
-      'btnStartWithName', 'btnSubmitAnswer', 'btnRetakeQuiz', 'btnSeeLeaderboard'
+      'resultUserRank', 'resultTotalUsers', 'resultPace', 'resultStreak', 'resultAccordionPanel',
+      'leaderboardUserTimeSpent', 'leaderboardUserRank', 'leaderboardTotalUsers', 'btnBack', 'btnStart', 'btnStartAnon',
+      'btnStartWithName', 'btnSubmitAnswer', 'btnCopyResultLink', 'btnAccordionTrigger', 'btnRetakeQuiz', 'btnSeeLeaderboard'
     ];
 
     required.forEach(key => {
@@ -236,7 +239,17 @@ export const QuizApp = {
       this.startQuiz();
     });
 
-    // Action 6: Transition from Results Screen to Leaderboard View
+    // Action 6: Accordion toggle
+    if (this.elements.btnAccordionTrigger && this.elements.resultAccordionPanel) {
+      this.elements.resultAccordionPanel.hidden = true; // closed by default
+      this.elements.btnAccordionTrigger.addEventListener('click', () => {
+        const isExpanded = this.elements.btnAccordionTrigger.getAttribute('aria-expanded') === 'true';
+        this.elements.btnAccordionTrigger.setAttribute('aria-expanded', String(!isExpanded));
+        this.elements.resultAccordionPanel.hidden = isExpanded;
+      });
+    }
+
+    // Action 7: Transition from Results Screen to Leaderboard View
     this.elements.btnSeeLeaderboard.addEventListener('click', () => {
       this.showLeaderboard()
     });
@@ -440,10 +453,6 @@ export const QuizApp = {
   },
 
   updateTimerUI() {
-    const minutesTotal = Math.floor(this.quizState.totalTimeLimit / 60);
-    const secondsTotal = this.quizState.totalTimeLimit % 60;
-    this.elements.timerTotalText.textContent = `${String(minutesTotal).padStart(2,'0')}:${String(secondsTotal).padStart(2,'0')}`;
-
     const minutesRemaining = Math.floor(this.quizState.timeRemaining / 60);
     const secondsRemaining = this.quizState.timeRemaining % 60;
     this.elements.timerText.textContent = `${String(minutesRemaining).padStart(2,'0')}:${String(secondsRemaining).padStart(2,'0')}`;
@@ -479,7 +488,7 @@ export const QuizApp = {
 
     // 2. Map structural metrics telemetry packages downstream
     this.recordAnswer(question, selectedIndex, isCorrect, timeSpent, questionScore);
-    this.showFeedback(isCorrect);
+    this.showFeedback(isCorrect, question);
     this.lockQuestion();
 
     // 3. Dynamic Visual Feedback States rendering assignments 
@@ -535,10 +544,19 @@ export const QuizApp = {
     });
   },
 
-  showFeedback(isCorrect) {
+  showFeedback(isCorrect, question) {
+    const message = question.getFeedbackMessage(isCorrect);
     this.elements.feedback.style.display = 'block';
-    this.elements.feedbackRight.style.display = isCorrect ? 'block' : 'none';
-    this.elements.feedbackWrong.style.display = isCorrect ? 'none' : 'block';
+
+    if (isCorrect) {
+      this.elements.feedbackRight.innerHTML = message || 'Okay, okay. I see you! 🙂';
+      this.elements.feedbackRight.style.display = 'block';
+      this.elements.feedbackWrong.style.display = 'none';
+    } else {
+      this.elements.feedbackWrong.innerHTML = message || 'Oops! What you mean?! 😂 🥲';
+      this.elements.feedbackWrong.style.display = 'block';
+      this.elements.feedbackRight.style.display = 'none';
+    }
   },
 
   hideFeedback() {
@@ -643,6 +661,7 @@ export const QuizApp = {
       if (insertError) throw insertError;
       
       const liveRecordId = (insertData && insertData[0]) ? insertData[0].id : null;
+      if (liveRecordId) localStorage.setItem('sam_quiz_last_result_id', liveRecordId);
 
       // 5. Query global listings sorted descending by high score and fast pacing
       const { data: globalRecords, error: fetchError } = await supabase
@@ -782,6 +801,45 @@ export const QuizApp = {
     } else {
       trialBadge.textContent = `${stats.userTrials} runs`;
     }
+
+    // 1. Build the shareable URL cleanly using the URL object
+    try {
+      const resultId = localStorage.getItem('sam_quiz_last_result_id');
+      
+      if (resultId) {
+        // Construct base URL safely (using base to ensure trailing slash is handled properly)
+        const baseUrl = new URL('leaderboard.html', window.location.href);
+        baseUrl.searchParams.set('result', resultId);
+        const shareUrl = baseUrl.toString();
+
+        // 2. Clear out any previous click event listener before adding a new one
+        const copyButton = this.elements.btnCopyResultLink;
+        if (copyButton) {
+          // Clone the button or use .replaceWith() to wipe old listeners
+          const freshButton = copyButton.cloneNode(true);
+          copyButton.parentNode.replaceChild(freshButton, copyButton);
+          this.elements.btnCopyResultLink = freshButton; // Update reference
+
+          // 3. Bind the new listener
+          freshButton.addEventListener('click', async () => {
+            try {
+              await navigator.clipboard.writeText(shareUrl);
+              freshButton.textContent = 'Link Copied!';
+              
+              setTimeout(() => {
+                freshButton.innerHTML = '<i data-feather="copy" aria-hidden="true"></i>';
+              }, 2000);
+            } catch (err) {
+              console.error('Failed to copy text: ', err);
+              freshButton.textContent = 'Error Copying';
+            }
+          });
+        }
+      }
+    } catch (e) {
+      console.error("Failed to build shareable link", e);
+    }
+
   },
 
   renderLeaderboardUI(records) {
@@ -868,15 +926,18 @@ export const QuizApp = {
 
       if (error) throw error;
 
-      this.renderLeaderboardUI(data);
+      // Re-apply isCurrentUser flag so the highlight works
+      const deviceId = localStorage.getItem('sam_quiz_device_uid');
+      const annotated = (data || []).map(entry => ({
+        ...entry,
+        isCurrentUser: entry.user_id === deviceId
+      }));
 
-      this.navigateTo(
-        this.elements.result,
-        this.elements.leaderboard
-      );
-    }
-    catch (err) {
+      this.renderLeaderboardUI(annotated);
+      this.navigateTo(this.elements.result, this.elements.leaderboard);
+    } catch (err) {
       console.error(err);
     }
   }
+
 };
