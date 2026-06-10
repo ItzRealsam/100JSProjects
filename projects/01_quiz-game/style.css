@@ -429,7 +429,7 @@ body {
 /* Icon Buttons inside dashboards */
 .quiz__btn-icon {
   background: none;
-  color: var(--text-secondary);
+  color: rgb(var(--text-secondary));
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -606,7 +606,7 @@ body {
 .quiz__leaderboard-item--placeholder {
   justify-content: center;
   background: none;
-  color: var(--text-muted);
+  color: rgb(var(--text-secondary));
   font-weight: 700;
   padding: 2px;
 }
@@ -643,6 +643,18 @@ body {
 .quiz__leaderboard-name {
   flex-grow: 1;
   font-weight: 700;
+}
+
+.quiz__leaderboard-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.quiz__leaderboard-time {
+  font-size: 1.2rem;
+  opacity: 0.6;
 }
 
 .quiz__leaderboard-score {

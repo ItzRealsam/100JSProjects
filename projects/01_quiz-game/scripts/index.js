@@ -1,4 +1,3 @@
-import { quizQuestions } from "./data/question.js";
 import { QuizApp } from "./data/quiz.js";
 
 // Safe lifecycle app bootstrapper

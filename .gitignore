@@ -1,0 +1,2 @@
+# Ignore local database config from being uploaded to GitHub
+projects/01_quiz-game/config.js
